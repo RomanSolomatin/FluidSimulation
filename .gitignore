@@ -5,6 +5,10 @@
 /Saved/
 /Build/
 
+# UE4 Project Plugins directories to ignore
+/Plugins/*/Binaries/
+/Plugins/*/Intermediate/
+
 # Visual Studio solutions
 /*.sln
 /*.sdf

@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{673601E9-4835-3869-D0D6-A895208177C9}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "FluidSimulation",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
