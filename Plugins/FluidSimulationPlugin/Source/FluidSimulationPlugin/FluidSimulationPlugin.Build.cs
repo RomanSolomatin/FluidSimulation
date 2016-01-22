@@ -27,6 +27,9 @@ public class FluidSimulationPlugin : ModuleRules
 			new string[]
 			{
 				"Core",
+                "RenderCore",
+                "ShaderCore",
+                "RHI",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

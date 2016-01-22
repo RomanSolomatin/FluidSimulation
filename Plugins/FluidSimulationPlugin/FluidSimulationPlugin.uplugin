@@ -14,7 +14,7 @@
 		{
 			"Name": "FluidSimulationPlugin",
 			"Type": "Developer",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "PostConfigInit"
 		}
 	],
 	"EnabledByDefault": false,

@@ -6,9 +6,11 @@ public class FluidSimulation : ModuleRules
 {
 	public FluidSimulation(TargetInfo Target)
 	{
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "RHI", "FluidSimulationPlugin" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
+
+        PublicIncludePaths.AddRange(new string[] { "FluidSimulationPlugin/Public" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

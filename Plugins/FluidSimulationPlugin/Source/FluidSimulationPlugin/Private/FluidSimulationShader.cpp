@@ -1,0 +1,4 @@
+#include "FluidSimulationPluginPrivatePCH.h"
+
+IMPLEMENT_UNIFORM_BUFFER_STRUCT(FFluidSimulationShaderConstantParameters, TEXT("ConstantParams"))
+IMPLEMENT_UNIFORM_BUFFER_STRUCT(FFluidSimulationShaderVariableParameters, TEXT("VariableParams"))
