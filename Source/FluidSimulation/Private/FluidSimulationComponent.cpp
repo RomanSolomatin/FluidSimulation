@@ -26,6 +26,9 @@ void UFluidSimulationComponent::BeginPlay()
 	PixelShading6 = new FFluidSimulationPixelShaderInstance(GetWorld()->Scene->GetFeatureLevel());
 	PixelShading7 = new FFluidSimulationPixelShaderInstance(GetWorld()->Scene->GetFeatureLevel());
 	PixelShading8 = new FFluidSimulationPixelShaderInstance(GetWorld()->Scene->GetFeatureLevel());
+
+	FFluidSimulationShaderInstance::FluidSimParameters Parameters{ Dissipation, Decay, TimeStepModifier, TimeStep, VorticityStrength, Point, Radius, VelocityAmount, DensityAmount };
+	ComputeShading->UpdateParameters(Parameters);
 }
 
 void UFluidSimulationComponent::BeginDestroy()
@@ -41,6 +44,17 @@ void UFluidSimulationComponent::BeginDestroy()
 	{
 		delete PixelShading1;
 	}
+}
+
+void UFluidSimulationComponent::PostEditChangeProperty(struct FPropertyChangedEvent& e)
+{
+	if (ComputeShading != NULL)
+	{
+		FFluidSimulationShaderInstance::FluidSimParameters Parameters{ Dissipation, Decay, TimeStepModifier, TimeStep, VorticityStrength, Point, Radius, VelocityAmount, DensityAmount };
+		ComputeShading->UpdateParameters(Parameters);
+	}
+
+	Super::PostEditChangeProperty(e);
 }
 
 // Called every frame

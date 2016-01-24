@@ -25,7 +25,36 @@ public:
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
+
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		float Dissipation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		float Decay;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		float TimeStepModifier;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		float TimeStep;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		float VorticityStrength;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		FVector Point;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		float Radius;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		FVector VelocityAmount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		FVector DensityAmount;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
 		UMaterialInterface* FluidSimulationMaterial;
 

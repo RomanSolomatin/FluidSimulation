@@ -62,6 +62,20 @@ FFluidSimulationShaderInstance::~FFluidSimulationShaderInstance()
 	bIsUnloading = true;
 }
 
+void FFluidSimulationShaderInstance::UpdateParameters(FluidSimParameters Parameters)
+{
+	ConstantParameters.Dissipation = Parameters.Dissipation;
+	ConstantParameters.TimeStepModifier = Parameters.TimeStepModifier;
+	ConstantParameters.Decay = Parameters.Decay;
+	ConstantParameters.VorticityStrength = Parameters.VorticityStrength;
+	ConstantParameters.Point = Parameters.Point;
+	ConstantParameters.Radius = Parameters.Radius;
+	ConstantParameters.TimeStep = Parameters.TimeStep;
+
+	VelocityAmount = Parameters.VelocityAmount;
+	DensityAmount = Parameters.DensityAmount;
+}
+
 void FFluidSimulationShaderInstance::ExecuteShader()
 {
 	if (bIsUnloading || bIsShaderExecuting)
@@ -118,11 +132,6 @@ void FFluidSimulationShaderInstance::ExecuteShaderInternal()
 	TShaderMapRef<FFluidSimAdvectShader> AdvectionShader(GetGlobalShaderMap(FeatureLevel));
 	RHICmdList.SetComputeShader(AdvectionShader->GetComputeShader());
 
-	ConstantParameters.Dissipation = 0.995f;
-	ConstantParameters.TimeStepModifier = 1.0f;
-	ConstantParameters.Decay = 0.0f;
-	ConstantParameters.VorticityStrength = 0.8f;
-
 	AdvectionShader->SetSurfaces(RHICmdList, ObstacleSRV, VelocityInSRV, TemperatureInSRV, TemperatureOutUAV);
 	AdvectionShader->SetUniformBuffers(RHICmdList, ConstantParameters, VariableParameters);
 	DispatchComputeShader(RHICmdList, *AdvectionShader, VelocityIn->GetSizeX() / 8, VelocityIn->GetSizeY() / 8, VelocityIn->GetSizeZ() / 8);
@@ -150,10 +159,7 @@ void FFluidSimulationShaderInstance::ExecuteShaderInternal()
 	TShaderMapRef<FFluidSimImpulseShader> ImpulseShader(GetGlobalShaderMap(FeatureLevel));
 	RHICmdList.SetComputeShader(ImpulseShader->GetComputeShader());
 
-	ConstantParameters.Point = FVector(32.0f, 0.0f, 32.0f);
-	ConstantParameters.Amount = FVector(0.0f, 1.0f, 0.0f);
-	ConstantParameters.Radius = 20.0f;
-	ConstantParameters.TimeStep = 0.1f;
+	ConstantParameters.Amount = DensityAmount;
 
 	ImpulseShader->SetSurfaces(RHICmdList, DensityInSRV, DensityOutUAV);
 	ImpulseShader->SetUniformBuffers(RHICmdList, ConstantParameters, VariableParameters);
@@ -162,7 +168,7 @@ void FFluidSimulationShaderInstance::ExecuteShaderInternal()
 	DensityInUAV.Swap(DensityOutUAV);
 	DensityInSRV.Swap(DensityOutSRV);
 
-	ConstantParameters.Amount = FVector(0.0f, 1.0f, 0.0f);
+	ConstantParameters.Amount = VelocityAmount;
 
 	// Apply external forces to the system
 	ImpulseShader->SetSurfaces(RHICmdList, VelocityInSRV, VelocityOutUAV);

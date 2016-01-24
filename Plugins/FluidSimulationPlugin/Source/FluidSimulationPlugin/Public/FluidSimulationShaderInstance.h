@@ -8,6 +8,20 @@ public:
 	FFluidSimulationShaderInstance(int32 SizeX, int32 SizeY, int32 SizeZ, ERHIFeatureLevel::Type ShaderFeatureLevel);
 	~FFluidSimulationShaderInstance();
 
+	struct FluidSimParameters {
+		float Dissipation;
+		float Decay;
+		float TimeStepModifier;
+		float TimeStep;
+		float VorticityStrength;
+		FVector Point;
+		float Radius;
+		FVector VelocityAmount;
+		FVector DensityAmount;
+	};
+
+	void UpdateParameters(FluidSimParameters Parameters);
+
 	void ExecuteShader();
 	void ExecuteShaderInternal();
 	void ExecuteObstaclesShader();
@@ -25,6 +39,9 @@ public:
 private:
 	bool bIsShaderExecuting;
 	bool bIsUnloading;
+
+	FVector VelocityAmount;
+	FVector DensityAmount;
 
 	FFluidSimulationShaderConstantParameters ConstantParameters;
 	FFluidSimulationShaderVariableParameters VariableParameters;
