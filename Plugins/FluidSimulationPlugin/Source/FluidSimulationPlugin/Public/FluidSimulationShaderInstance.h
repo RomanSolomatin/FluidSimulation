@@ -18,6 +18,7 @@ public:
 		float Radius;
 		FVector VelocityAmount;
 		FVector DensityAmount;
+		uint8 JacobiIterations;
 	};
 
 	void UpdateParameters(FluidSimParameters Parameters);
@@ -39,6 +40,8 @@ public:
 private:
 	bool bIsShaderExecuting;
 	bool bIsUnloading;
+
+	uint8 JacobiIterations;
 
 	FVector VelocityAmount;
 	FVector DensityAmount;

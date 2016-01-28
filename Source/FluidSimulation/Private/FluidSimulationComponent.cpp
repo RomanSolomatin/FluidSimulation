@@ -17,7 +17,7 @@ void UFluidSimulationComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ComputeShading = new FFluidSimulationShaderInstance(64, 64, 64, GetWorld()->Scene->GetFeatureLevel());
+	ComputeShading = new FFluidSimulationShaderInstance(128, 128, 128, GetWorld()->Scene->GetFeatureLevel());
 	PixelShading1 = new FFluidSimulationPixelShaderInstance(GetWorld()->Scene->GetFeatureLevel());
 	PixelShading2 = new FFluidSimulationPixelShaderInstance(GetWorld()->Scene->GetFeatureLevel());
 	PixelShading3 = new FFluidSimulationPixelShaderInstance(GetWorld()->Scene->GetFeatureLevel());
@@ -27,7 +27,7 @@ void UFluidSimulationComponent::BeginPlay()
 	PixelShading7 = new FFluidSimulationPixelShaderInstance(GetWorld()->Scene->GetFeatureLevel());
 	PixelShading8 = new FFluidSimulationPixelShaderInstance(GetWorld()->Scene->GetFeatureLevel());
 
-	FFluidSimulationShaderInstance::FluidSimParameters Parameters{ Dissipation, Decay, TimeStepModifier, TimeStep, VorticityStrength, Point, Radius, VelocityAmount, DensityAmount };
+	FFluidSimulationShaderInstance::FluidSimParameters Parameters{ Dissipation, Decay, TimeStepModifier, TimeStep, VorticityStrength, Point, Radius, VelocityAmount, DensityAmount, JacobiIterations };
 	ComputeShading->UpdateParameters(Parameters);
 }
 
@@ -50,7 +50,7 @@ void UFluidSimulationComponent::PostEditChangeProperty(struct FPropertyChangedEv
 {
 	if (ComputeShading != NULL)
 	{
-		FFluidSimulationShaderInstance::FluidSimParameters Parameters{ Dissipation, Decay, TimeStepModifier, TimeStep, VorticityStrength, Point, Radius, VelocityAmount, DensityAmount };
+		FFluidSimulationShaderInstance::FluidSimParameters Parameters{ Dissipation, Decay, TimeStepModifier, TimeStep, VorticityStrength, Point, Radius, VelocityAmount, DensityAmount, JacobiIterations };
 		ComputeShading->UpdateParameters(Parameters);
 	}
 
@@ -68,7 +68,7 @@ void UFluidSimulationComponent::TickComponent( float DeltaTime, ELevelTick TickT
 		FTexture3DRHIRef InputTexture = ComputeShading->GetDensityIn();
 		PixelShading1->ExecutePixelShader(DensityIn, InputTexture);
 
-		InputTexture = ComputeShading->GetDensityOut();
+		/*InputTexture = ComputeShading->GetDensityOut();
 		PixelShading2->ExecutePixelShader(DensityOut, InputTexture);
 
 		InputTexture = ComputeShading->GetVelocityIn();
@@ -87,7 +87,7 @@ void UFluidSimulationComponent::TickComponent( float DeltaTime, ELevelTick TickT
 		PixelShading7->ExecutePixelShader(Divergence, InputTexture);
 
 		InputTexture = ComputeShading->GetVorticityOut();
-		PixelShading8->ExecutePixelShader(VorticityOut, InputTexture);
+		PixelShading8->ExecutePixelShader(VorticityOut, InputTexture);*/
 	}
 }
 

@@ -53,6 +53,8 @@ FFluidSimulationShaderInstance::FFluidSimulationShaderInstance(int32 SizeX, int3
 	VorticityInSRV = RHICreateShaderResourceView(VorticityIn, 0);
 	VorticityOutSRV = RHICreateShaderResourceView(VorticityOut, 0);
 
+	GEngine->FluidSimDensitySRV = RHICreateShaderResourceView(DensityIn, 0);
+
 	// Set up walls of simulation
 	ExecuteObstaclesShader();
 }
@@ -74,6 +76,8 @@ void FFluidSimulationShaderInstance::UpdateParameters(FluidSimParameters Paramet
 
 	VelocityAmount = Parameters.VelocityAmount;
 	DensityAmount = Parameters.DensityAmount;
+
+	JacobiIterations = Parameters.JacobiIterations;
 }
 
 void FFluidSimulationShaderInstance::ExecuteShader()
@@ -209,7 +213,7 @@ void FFluidSimulationShaderInstance::ExecuteShaderInternal()
 	TShaderMapRef<FFluidSimJacobiShader> JacobiShader(GetGlobalShaderMap(FeatureLevel));
 	RHICmdList.SetComputeShader(JacobiShader->GetComputeShader());
 	
-	for (uint8 i = 0; i < JACOBI_ITERATIONS; ++i) {
+	for (uint8 i = 0; i < JacobiIterations; ++i) {
 		JacobiShader->SetSurfaces(RHICmdList, ObstacleSRV, DivergenceSRV, PressureInSRV, PressureOutUAV);
 		DispatchComputeShader(RHICmdList, *JacobiShader, VelocityIn->GetSizeX() / 8, VelocityIn->GetSizeY() / 8, VelocityIn->GetSizeZ() / 8);
 		JacobiShader->UnbindBuffers(RHICmdList);

@@ -56,6 +56,9 @@ public:
 		FVector DensityAmount;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
+		uint8 JacobiIterations;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
 		UMaterialInterface* FluidSimulationMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ShaderDemo)
